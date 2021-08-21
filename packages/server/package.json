@@ -6,7 +6,9 @@
     "start": "node .",
     "start:watch": "nodemon .",
     "build": "rimraf ./dist && tsc",
-    "build:watch": "rimraf ./dist && tsc --watch"
+    "build:watch": "rimraf ./dist && tsc --watch",
+    "dcu": "docker-compose up",
+    "migrate": "node ./dist/migrate.js"
   },
   "keywords": [],
   "author": "",
@@ -16,11 +18,14 @@
     "@types/koa": "^2.13.4",
     "@types/koa-bodyparser": "^4.3.3",
     "@types/koa-router": "^7.4.4",
+    "@types/pg": "^8.6.1",
     "dotenv": "^10.0.0",
     "joi": "^17.4.2",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
-    "koa-router": "^10.0.0"
+    "koa-router": "^10.0.0",
+    "pg": "^8.7.1",
+    "postgres-migrations": "^5.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
