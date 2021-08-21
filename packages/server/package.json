@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node .",
     "start:watch": "nodemon .",
+    "start:worker": "node ./dist/worker.js",
     "build": "rimraf ./dist && tsc",
     "build:watch": "rimraf ./dist && tsc --watch",
     "dcu": "docker-compose up",
