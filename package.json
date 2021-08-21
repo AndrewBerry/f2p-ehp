@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewBerry/f2p-ehp.git"
+  },
+  "workspaces": [
+    "./packages/*"
+  ]
+}
