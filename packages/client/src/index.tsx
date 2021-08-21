@@ -1,18 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { Player } from "@f2p/common";
+import { Router } from "./router";
 
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
 
-const me: Player = {
-  ign: "so so much"
-};
-
 ReactDOM.render(
-  <React.StrictMode>{me.ign}</React.StrictMode>,
+  <React.StrictMode>
+    <Router />
+  </React.StrictMode>,
   document.getElementById("root")
 );
 
