@@ -9,20 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config();
-}
-const Koa = require("koa");
-const loaders_1 = require("./loaders/loaders");
-function start() {
+exports.loaders = void 0;
+const serverLoader_1 = require("./serverLoader");
+const routerLoader_1 = require("./routerLoader");
+function loaders(app) {
     return __awaiter(this, void 0, void 0, function* () {
-        const app = new Koa();
-        yield loaders_1.loaders(app);
-        const port = process.env.port || 3030;
-        app.listen(port, () => {
-            console.log(`Server listening on port ${port}...`);
-        });
+        yield serverLoader_1.serverLoader(app);
+        yield routerLoader_1.routerLoader(app);
     });
 }
-start();
-//# sourceMappingURL=index.js.map
+exports.loaders = loaders;
+//# sourceMappingURL=loaders.js.map

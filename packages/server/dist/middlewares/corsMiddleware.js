@@ -9,20 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config();
-}
-const Koa = require("koa");
-const loaders_1 = require("./loaders/loaders");
-function start() {
+exports.corsMiddleware = void 0;
+function corsMiddleware(ctx, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const app = new Koa();
-        yield loaders_1.loaders(app);
-        const port = process.env.port || 3030;
-        app.listen(port, () => {
-            console.log(`Server listening on port ${port}...`);
-        });
+        ctx.set("Access-Control-Allow-Origin", process.env.CORS_ORIGIN);
+        ctx.set("Access-Control-Max-Age", "600");
+        ctx.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
+        ctx.set("Access-Control-Allow-Credentials", "true");
+        ctx.set("Access-Control-Allow-Headers", "content-type");
+        yield next();
     });
 }
-start();
-//# sourceMappingURL=index.js.map
+exports.corsMiddleware = corsMiddleware;
+//# sourceMappingURL=corsMiddleware.js.map

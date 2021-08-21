@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
+    "start": "node .",
+    "start:watch": "nodemon .",
     "build": "rimraf ./dist && tsc",
     "build:watch": "rimraf ./dist && tsc --watch"
   },
@@ -12,7 +14,15 @@
   "dependencies": {
     "@f2p/common": "1.0.0",
     "@types/koa": "^2.13.4",
+    "@types/koa-bodyparser": "^4.3.3",
+    "@types/koa-router": "^7.4.4",
     "dotenv": "^10.0.0",
-    "koa": "^2.13.1"
+    "joi": "^17.4.2",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }

@@ -9,20 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config();
-}
-const Koa = require("koa");
-const loaders_1 = require("./loaders/loaders");
-function start() {
+exports.serverLoader = void 0;
+const bodyParser = require("koa-bodyparser");
+const corsMiddleware_1 = require("../middlewares/corsMiddleware");
+function serverLoader(app) {
     return __awaiter(this, void 0, void 0, function* () {
-        const app = new Koa();
-        yield loaders_1.loaders(app);
-        const port = process.env.port || 3030;
-        app.listen(port, () => {
-            console.log(`Server listening on port ${port}...`);
-        });
+        app.use(corsMiddleware_1.corsMiddleware);
+        app.use(bodyParser());
+        app.keys = process.env.APP_COOKIE_KEY.split(",");
     });
 }
-start();
-//# sourceMappingURL=index.js.map
+exports.serverLoader = serverLoader;
+//# sourceMappingURL=serverLoader.js.map
