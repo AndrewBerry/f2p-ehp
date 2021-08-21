@@ -19,7 +19,7 @@ CREATE TABLE stats_pit (
 CREATE VIEW ranks AS
   SELECT
     ign,
-    DENSE_RANK() OVER (ORDER BY total_ehp DESC) AS total_rnk
+    DENSE_RANK() OVER (ORDER BY total_ehp DESC) AS total_rnk,
   FROM stats_pit
   WHERE
     is_latest IS TRUE;
