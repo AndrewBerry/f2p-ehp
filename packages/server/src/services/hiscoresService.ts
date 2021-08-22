@@ -64,49 +64,99 @@ export function doValuesIncludeP2p(hiscores: number[][]): boolean {
   return p2pHiscoreCells.some(({ row, cell }) => hiscores[row][cell] > 0);
 }
 
-function getStatsFromValues(hiscoresValues: number[][]) {
-  return {
-    total_level: hiscoresValues[0][1] - 8,
-    total_exp: hiscoresValues[0][2],
-    att_level: hiscoresValues[1][1],
-    att_exp: hiscoresValues[1][2],
-    def_level: hiscoresValues[2][1],
-    def_exp: hiscoresValues[2][2],
-    str_level: hiscoresValues[3][1],
-    str_exp: hiscoresValues[3][2],
-    hp_level: hiscoresValues[4][1],
-    hp_exp: hiscoresValues[4][2],
-    range_level: hiscoresValues[5][1],
-    range_exp: hiscoresValues[5][2],
-    pray_level: hiscoresValues[6][1],
-    pray_exp: hiscoresValues[6][2],
-    mage_level: hiscoresValues[7][1],
-    mage_exp: hiscoresValues[7][2],
-    cook_level: hiscoresValues[8][1],
-    cook_exp: hiscoresValues[8][2],
-    wc_level: hiscoresValues[9][1],
-    wc_exp: hiscoresValues[9][2],
-    fish_level: hiscoresValues[11][1],
-    fish_exp: hiscoresValues[11][2],
-    fm_level: hiscoresValues[12][1],
-    fm_exp: hiscoresValues[12][2],
-    craft_level: hiscoresValues[13][1],
-    craft_exp: hiscoresValues[13][2],
-    mining_level: hiscoresValues[14][1],
-    mining_exp: hiscoresValues[14][2],
-    smith_level: hiscoresValues[15][1],
-    smith_exp: hiscoresValues[15][2],
-    rc_level: hiscoresValues[21][1],
-    rc_exp: hiscoresValues[21][2],
+export interface IStats {
+  totalLevel: number;
+  totalExp: number;
+  attLevel: number;
+  attExp: number;
+  defLevel: number;
+  defExp: number;
+  strLevel: number;
+  strExp: number;
+  hpLevel: number;
+  hpExp: number;
+  rangeLevel: number;
+  rangeExp: number;
+  prayLevel: number;
+  prayExp: number;
+  mageLevel: number;
+  mageExp: number;
+  cookLevel: number;
+  cookExp: number;
+  wcLevel: number;
+  wcExp: number;
+  fishLevel: number;
+  fishExp: number;
+  fmLevel: number;
+  fmExp: number;
+  craftLevel: number;
+  craftExp: number;
+  miningLevel: number;
+  miningExp: number;
+  smithLevel: number;
+  smithExp: number;
+  rcLevel: number;
+  rcExp: number;
+  oborKc: number;
+  bryoKc: number;
+  clues: number;
+  lms: number;
+}
 
-    obor_kc: hiscoresValues[65][1],
-    bryo_kc: hiscoresValues[39][1],
+function getStatsFromValues(hiscoresValues: number[][]): IStats {
+  return {
+    totalLevel: hiscoresValues[0][1] - 8,
+    totalExp: hiscoresValues[0][2],
+    attLevel: hiscoresValues[1][1],
+    attExp: hiscoresValues[1][2],
+    defLevel: hiscoresValues[2][1],
+    defExp: hiscoresValues[2][2],
+    strLevel: hiscoresValues[3][1],
+    strExp: hiscoresValues[3][2],
+    hpLevel: hiscoresValues[4][1],
+    hpExp: hiscoresValues[4][2],
+    rangeLevel: hiscoresValues[5][1],
+    rangeExp: hiscoresValues[5][2],
+    prayLevel: hiscoresValues[6][1],
+    prayExp: hiscoresValues[6][2],
+    mageLevel: hiscoresValues[7][1],
+    mageExp: hiscoresValues[7][2],
+    cookLevel: hiscoresValues[8][1],
+    cookExp: hiscoresValues[8][2],
+    wcLevel: hiscoresValues[9][1],
+    wcExp: hiscoresValues[9][2],
+    fishLevel: hiscoresValues[11][1],
+    fishExp: hiscoresValues[11][2],
+    fmLevel: hiscoresValues[12][1],
+    fmExp: hiscoresValues[12][2],
+    craftLevel: hiscoresValues[13][1],
+    craftExp: hiscoresValues[13][2],
+    miningLevel: hiscoresValues[14][1],
+    miningExp: hiscoresValues[14][2],
+    smithLevel: hiscoresValues[15][1],
+    smithExp: hiscoresValues[15][2],
+    rcLevel: hiscoresValues[21][1],
+    rcExp: hiscoresValues[21][2],
+
+    oborKc: hiscoresValues[65][1],
+    bryoKc: hiscoresValues[39][1],
     clues: hiscoresValues[28][1],
     lms: hiscoresValues[34][1],
   };
 }
 
-export async function fetchPlayer(ign: string, lastKnownAccType?: AccType) {
+interface IAccount {
+  ign: string;
+  accType: AccType;
+  isP2p: boolean;
+}
+
+export type AccStats = IAccount & IStats;
+
+export async function fetchPlayer(
+  ign: string,
+  lastKnownAccType?: AccType
+): Promise<AccStats> {
   const accTypes = getAccTypesToCheck(lastKnownAccType);
 
   const allAccTypeStats = await Promise.all(
@@ -117,7 +167,7 @@ export async function fetchPlayer(ign: string, lastKnownAccType?: AccType) {
         const isP2p = doValuesIncludeP2p(values);
         const stats = getStatsFromValues(values);
 
-        return { accType, isP2p, ...stats };
+        return { ign, accType, isP2p, ...stats };
       } catch (er) {
         return null;
       }
@@ -126,7 +176,7 @@ export async function fetchPlayer(ign: string, lastKnownAccType?: AccType) {
 
   const validAccTypeStats = allAccTypeStats
     .flatMap((stats) => (!!stats ? [stats] : []))
-    .sort((a, b) => b.total_exp - a.total_exp);
+    .sort((a, b) => b.totalExp - a.totalExp);
 
   if (validAccTypeStats.length === 0) {
     throw new Error(`Unable to find any valid stats for ign: ${ign}`);
